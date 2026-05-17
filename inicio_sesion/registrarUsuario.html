@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/registrarUsuario.css">
+    
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="caja-login">
+            <h2>Registrarse</h2>
+
+            <!-- Mensaje de estado -->
+            <div id="estado" class="mensaje-estado"></div>
+
+            <div id="perfilForm">
+                <form name="forma" action="" onsubmit="alert('editando datos...')" method="post" enctype="">
+                    <!-- Campos del formulario -->
+                    <table class="tabla-perfil" align="center">
+                        <tr>
+                            <th style="width: 33%;">Nombre completo</th>
+                            <th style="width: 33%;">Edad</th>
+                            <th style="width: 33%;">Sexo</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="nombre" name="nombre" placeholder="" value=""></td>
+                            <td><input type="text" id="edad" name="edad" placeholder="" value=""></td>
+                            <td>
+                                <select name="sexo" id="sexo" required size="1">
+                                    <option value='M' selected>M</option>
+                                    <option value='F'>F</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                        </tr>
+                        <tr>
+                            <td><input type="email" id="email" name="email" placeholder="" value=""></td>
+                            <td><input type="text" id="telefono" name="telefono" placeholder="" value=""></td>
+                            <td><input type="text" id="direccion" name="direccion" placeholder="" value=""></td>
+                        </tr>
+                        <tr>
+                            <th>Contraseña</th>
+                        </tr>
+                        <tr>
+                            <td><input type="password" id="contrasena" name="contrasena" placeholder="Ingresa una contraseña" required></td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                    <div class="contenedor-botones">
+                        <a href="inicioSesion.html">Cancelar</a>
+                        <button type="submit">Registrar</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

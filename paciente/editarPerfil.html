@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="../css/encabezado.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/editarPerfil.css">
+
+    <style>
+        @media print {
+
+            body,
+            html {
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="historial.html">Historial</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+        <section id="contenedor-cita">
+            <br><br><br>
+            <div id="perfilForm">
+                <form name="forma" action="" onsubmit="alert('editando datos...')" method="post" enctype="">
+                    <h2>Editar perfil de [nombre_paciente]</h2>
+                    <!-- Campos del formulario -->
+                    <table class="tabla-perfil" align="center">
+                        <tr>
+                            <th style="width: 33%;">Nombre completo</th>
+                            <th style="width: 33%;">Edad</th>
+                            <th style="width: 33%;">Sexo</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="nombre" name="nombre" placeholder="" value=""></td>
+                            <td><input type="text" id="edad" name="edad" placeholder="" value=""></td>
+                            <td>
+                                <select name="sexo" id="sexo" required size="1">
+                                    <option value='M' selected>M</option>
+                                    <option value='F'>F</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                        </tr>
+                        <tr>
+                            <td><input type="email" id="email" name="email" placeholder="" value=""></td>
+                            <td><input type="text" id="telefono" name="telefono" placeholder="" value=""></td>
+                            <td><input type="text" id="direccion" name="direccion" placeholder="" value=""></td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                    <div class="contenedor-botones">
+                        <a href="historial.html">Cancelar</a>
+                        <button type="submit">Editar</button>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir">
+        <p><i class="arrow up"></i></p>
+    </button>
+</body>
+<script src="../js/index.js"></script>
+
+</html>

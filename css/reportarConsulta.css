@@ -1,0 +1,47 @@
+.contenedor-consulta {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    padding: 30px;
+    margin: 80px auto;
+    width: 80%;
+    max-width: 900px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.contenedor-consulta h2{
+    text-align: left;
+}
+
+.encabezado-consulta {
+    display: flex;
+    align-items: center;
+}
+
+.fecha-cita p{
+    display: flex;
+    align-items: center;
+    margin: 0px 20px;
+    background-color: #ede4ff;
+    border-radius: 10px;
+    padding: 5px;
+    color: #6015f5;
+
+}
+
+.tabla-consulta{
+    margin-left: auto;
+    margin-right: auto;
+    width:80%;
+    font-size: 15px;
+}
+
+.tabla-consulta th{
+    text-align: left;
+    font-weight: bold;
+}
+
+.tabla-consulta td{
+    text-align: left;
+}

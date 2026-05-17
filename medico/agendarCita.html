@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="../css/encabezado.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/agendarCita.css">
+    
+    <style>
+        @media print{
+            body,html{
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+            
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="calendario.html">Calendario</a></li>
+                    <li><a href="verPacientes.html">Ver pacientes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+        <section id="contenedor-cita">
+            <br><br><br>
+            <div id="citaForm">
+                <form name="forma" action="" onsubmit="alert('enviando datos...')" method="post" enctype="">
+                    <h2>Agendar una cita</h2>
+                    <!-- Campos del formulario -->
+                    <table align="center">
+                        <tr>
+                            <td><label for="diaCita">¿Qué día?:</label></td>
+                            <td>
+                                <select name="diaCita" id="diaCita" required>
+                                    <option value='lunes' selected>Lunes</option>
+                                    <option value='martes' >Martes</option>
+                                    <option value='miercoles' >Miércoles</option>
+                                    <option value='jueves' >Jueves</option>
+                                    <option value='viernes' >Viernes</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="horaCita">¿A qué hora?:</label></td>
+                            <td>
+                                <select name="diaCita" id="diaCita" required size="1">
+                                    <option value='09:00' selected>09:00</option>
+                                    <option value='09:30' selected>09:30</option>
+                                    <option value='10:00' selected>10:00</option>
+                                    <option value='10:30' selected>10:30</option>
+                                    <option value='11:00' selected>11:00</option>
+                                    <option value='11:30' selected>11:30</option>
+                                    <option value='12:00' selected>12:00</option>
+                                    <option value='12:30' selected>12:30</option>
+                                    <option value='13:00' selected>13:00</option>
+                                    <option value='13:30' selected>13:30</option>
+                                    <option value='14:00' selected>14:00</option>
+                                    <option value='14:30' selected>14:30</option>
+                                    <option value='15:00' selected>15:00</option>
+                                    <option value='15:30' selected>15:30</option>
+                                    <option value='16:00' selected>16:00</option>
+                                    <option value='16:30' selected>16:30</option>
+                                    <option value='17:00' selected>17:00</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="pacienteCita">Paciente:</label></td>
+                            <td><input type="text" id="paciente" name="paciente" placeholder="buscar paciente..." value=""></td>
+                        </tr>
+                    </table>
+
+                    <button type="submit">Enviar</button>
+
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir"><p><i class="arrow up"></i></p></button>
+</body>
+<script src="../js/index.js"></script>
+</html>

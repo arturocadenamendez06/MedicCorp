@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: rgb(241, 241, 241);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.caja-login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #6015f5;
+    font-weight: 600;
+    font-size: 50px;
+}
+
+/* Estilo para el div de estado */
+/* Mensaje de estado */
+#estado {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #f8d7da; /* Fondo rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+    transition: visibility 0s, opacity 0.5s ease;
+}
+
+
+.contenedor-input {
+    margin-bottom: 20px;
+}
+
+.contenedor-input label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.contenedor-input input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.contenedor-input input:focus {
+    border-color: #002E5F;
+    outline: none;
+    box-shadow: 0 0 4px rgba(116, 235, 213, 0.5);
+}
+
+.btn {
+    display: block;
+    margin: 20px auto;
+    background-color: #8c52ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #555;
+}
+
+.enlace-registro {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.enlace-registro a {
+    color: #002E5F;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.enlace-registro a:hover {
+    color: #57b8a4;
+}
+
+.contenedor-recordar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+

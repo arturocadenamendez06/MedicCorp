@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="../css/encabezado.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/verCitas.css">
+    
+    <style>
+        @media print{
+            body,html{
+                background-color: white;
+            }
+            #contenedor-Objetivo{
+                padding-top: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+
+            #acciones-Logros{
+                padding-top: 200px;
+                padding-bottom: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+            
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="historial.html">Historial</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+        <!-- Aqui está la sección para citas reservadas -->
+
+        <section id="contenedor-citas-reservadas">
+            <h2>Citas reservadas</h2>
+            <div id="contenido-citas-reservadas">
+                <!-- aquí se podría agregar formulario(s) pero sería ver como quedaría -->
+
+                <!-- ejemplo de un cita reservada -->
+                <div class="cita-reservada-componente">
+                    <span class="estado-cita">Reservada</span>
+                    <p class="fecha-cita">Viernes   12:30</p>
+                    <button class="btn-editar-cita" onclick="window.location.href='editarCita.html'"><img src="../imagenes/pencil_4076.png" width="30px" height="30px" align="center" alt="editar"></button>
+                    <button class="btn-eliminar-cita"><img src="../imagenes/basurero.png" width="30px" height="30px" align="center" alt="eliminar"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aqui está la sección para citas completadas -->
+        <section id="contenedor-citas-completadas">
+            <h2>Citas completadas</h2>
+            <div id="contenido-citas-completadas">
+                <!-- aquí se podría agregar formulario(s) pero sería ver como quedaría -->
+
+                <!-- ejemplo de un cita completada -->
+                <div class="cita-completada-componente">
+                    <span class="estado-cita">Completada</span>
+                    <p class="fecha-cita">Lunes   12:30</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir"><p><i class="arrow up"></i></p></button>
+</body>
+<script src="../js/index.js"></script>
+</html>

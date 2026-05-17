@@ -1,0 +1,129 @@
+.titulo-imagen {
+    position: relative;
+    width: 100%;
+}
+
+.hero-image {
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+}
+
+
+
+#contenedor-Objetivo, #acciones-Logros {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 80px auto;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.galeria {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.imagen-zoomable {
+    width: 1500px;
+    height: 450px;
+    object-fit: cover;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.imagen-zoomable:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.espaciado {
+    position: relative;
+    height: 8vh;
+    background-attachment: fixed; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.espaciado::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.13);
+    z-index: 0;
+}
+
+#tituloVibero {
+    position: relative;
+    z-index: 0; 
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 3rem;
+}
+
+#botonSubir {
+    display: none;
+    position: fixed;
+    bottom: 15px;
+    right: 10px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #8c52ff;
+    color: #002E5F;
+    cursor: pointer;
+    padding: 0px;
+    border-radius: 4px;
+    width: 50px;
+    height: 50px;
+}
+
+#botonSubir:hover {
+    background-color: #555;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.pie-pagina {
+    background-color: #002E5F;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

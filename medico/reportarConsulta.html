@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="../css/encabezado.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/agendarCita.css">
+    <link rel="stylesheet" href="../css/reportarConsulta.css">
+    <link rel="stylesheet" href="../css/editarCita.css">
+
+    <style>
+        @media print {
+
+            body,
+            html {
+                background-color: white;
+            }
+
+            #contenedor-Objetivo {
+                padding-top: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+
+            #acciones-Logros {
+                padding-top: 200px;
+                padding-bottom: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="calendario.html">Calendario</a></li>
+                    <li><a href="verPacientes.html">Ver pacientes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+
+        <div class="contenedor-consulta">
+            <div class="encabezado-consulta">
+                <div>
+                    <h2>Reporte de Consulta</h2>
+                </div>
+                <div class="fecha-cita">
+                    <p>Viernes 12:30</p>
+                </div>
+            </div>
+            <!-- aqui se editan los datos de una consulta -->
+            <form action="">
+                <table class="tabla-consulta">
+                    <tr>
+                        <th style="width: 20%;">Temperatura corporal:</th>
+                        <td style="width: 20%;"><input type="text" id="temperatura" name="temperatura" placeholder=""
+                                value=""></td>
+                        <td style="width: 5%;"></td>
+                        <th style="width: 20%; ">Diagnóstico:</th>
+                        <td><textarea id="diagnostico" name="diagnostico" placeholder="" rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Peso:</th>
+                        <td><input type="text" id="peso" name="peso" placeholder="" value=""></td>
+                        <td></td>
+                        <th >Resultado de análisis:</th>
+                        <td><textarea id="resultado_analisis" name="resultado_analisis" placeholder=""
+                                rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Altura:</th>
+                        <td><input type="text" id="altura" name="altura" placeholder="" value=""></td>
+                        <td></td>
+                        <th >Prescripciones:</th>
+                        <td><textarea id="prescripcion" name="prescripcion" placeholder="" rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Presión arterial:</th>
+                        <td><input type="text" id="presion_art" name="presion_art" placeholder="" value=""></td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <div class="contenedor-botones">
+                    <a href="verCitas.html">Cancelar</a>
+                    <button type="submit">Crear reporte</button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir">
+        <p><i class="arrow up"></i></p>
+    </button>
+</body>
+<script src="../js/index.js"></script>
+
+</html>

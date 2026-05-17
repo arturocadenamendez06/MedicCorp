@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="../css/encabezado.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/verPacientes.css">
+    
+    <style>
+        @media print{
+            body,html{
+                background-color: white;
+            }
+            #contenedor-Objetivo{
+                padding-top: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+
+            #acciones-Logros{
+                padding-top: 200px;
+                padding-bottom: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+            
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="calendario.html">Calendario</a></li>
+                    <li><a href="verPacientes.html">Ver pacientes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+        <section class="contenedor-imprimir">
+            <button class="btn-imprimir">Imprimir lista de pacientes</button>
+        </section>
+
+        <section id="contenedor-pacientes">
+
+            <div class="encabezado-pacientes">
+                <h2>Pacientes del consultorio</h2>
+            </div>
+
+            <!-- aqui está la tabla de pacientes -->
+            <table class="tabla-pacientes" border="solid 1px black;">
+                <tr>
+                    <th style="width: 20%;">Paciente</th>
+                    <th style="width: 20%;">Correo</th>
+                    <th style="width: 20%;">Teléfono</th>
+                    <th style="width: auto;"></th>
+                    <th style="width: auto;"></th>
+                </tr>
+
+                <!-- ejemplo de un paciente -->
+                <tr>
+                    <td>Alexandra Carmen</td>
+                    <td>nombre_correo@gmail.com</td>
+                    <td>999 XXX XXX</td>
+                    <td><a href="#"><button class="btn-historial">Ver historial</button></a></td>
+                    <td><button class="btn-eliminar-cita"><img src="../imagenes/basurero.png" width="30px" height="30px" align="center" alt="eliminar"></button></td>
+                </tr>
+                
+                
+            </table>
+        </section>
+
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir"><p><i class="arrow up"></i></p></button>
+</body>
+<script src="../js/index.js"></script>
+</html>

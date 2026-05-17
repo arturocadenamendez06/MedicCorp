@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="css/encabezado.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+    <style>
+        @media print{
+            body,html{
+                background-color: white;
+            }
+            #contenedor-Objetivo{
+                padding-top: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+
+            #acciones-Logros{
+                padding-top: 200px;
+                padding-bottom: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+            
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="historial.html">Historial</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+        <section id="contenedor-Objetivo">
+            <h2>Nuestro Vivero</h2>
+            <p>El objetivo del vivero es realizar la reproducción de plantas nativas para la reforestación en los campus, ayudando a reducir los efectos del cambio climático y la conservación de la biodiversidad de las especies vegetales de la región, en beneficio de la sustentabilidad a través de la reproducción de las especies mediante la colecta y rescate de germoplasma nativo para su multiplicación.</p>
+            <p>También aporta un área que sirva como escenario real de aprendizaje, donde se contribuye con la formación de los estudiantes acorde al Modelo Educativo para la Formación Integral, mediante visitas guiadas informativas y descriptivas sobre la importancia de los árboles nativos, así como cursos y talleres.</p>
+        </section>
+        
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir"><p><i class="arrow up"></i></p></button>
+</body>
+<script src="js/index.js"></script>
+</html>

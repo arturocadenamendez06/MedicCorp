@@ -1,0 +1,151 @@
+
+/* Sección de pacientes */
+
+#contenedor-pacientes {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 80px auto;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#contenedor-pacientes h2{
+    text-align: left;
+}
+
+.tabla-pacientes{
+    margin-left: auto;
+    margin-right: auto;
+    width:80%
+}
+
+table{
+    border-collapse: collapse;
+    border: solid 1px black;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+th, td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tabla-pacientes th{
+    background-color: #ede4ff;
+    text-align: center;
+    font-weight: bold;
+    color: #6015f5;
+    padding: 5px;
+}
+
+.tabla-pacientes td{
+    text-align: left;
+    padding: 5px;
+}
+
+.encabezado-pacientes {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.btn-editar-perfil{
+    display: inline-block;
+    background-color: white;
+    border: 0;
+    border-radius: 50%;
+    margin: 0 10px;
+    padding: 5px;
+}
+
+.btn-editar-perfil:hover{
+    background-color: lightgray;
+}
+
+.fecha-cita p{
+    display: flex;
+    align-items: center;
+    margin: 0px 20px;
+    background-color: #ede4ff;
+    border-radius: 10px;
+    padding: 5px;
+    color: #6015f5;
+
+}
+
+/* boton de impresión */
+
+.contenedor-imprimir{
+    position: fixed;
+    top: 100px;
+    right: 20px;
+}
+
+.btn-imprimir {
+    background-color: white;
+    padding: 30px;
+    margin: 80px auto;
+}
+
+.btn-imprimir {
+    display: block;
+    margin: 20px auto;
+    background-color: #8c52ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-imprimir:hover {
+    background-color: #555;
+}
+
+
+.btn-historial {
+    display: block;
+    margin: 20px auto;
+    background-color: #8c52ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-historial:hover {
+    background-color: #555;
+}
+
+.btn-eliminar-cita{
+    display: inline-block;
+    background-color: white;
+    border: 0px;
+    border-radius: 10px;
+    margin: 0px 10px;
+    padding: 3px;
+}
+
+.btn-eliminar-cita :hover {
+    background-color: lightgray;
+    border-radius: 50%;
+}
+
+table a{
+    text-decoration: none;
+}

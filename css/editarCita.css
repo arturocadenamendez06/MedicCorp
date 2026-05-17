@@ -1,0 +1,9 @@
+.contenedor-botones{
+    display: flex;
+    gap: 10px;
+}
+
+button, a {
+    display: inline-block;
+    margin: auto;
+}

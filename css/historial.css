@@ -1,0 +1,183 @@
+
+/* Sección de perfil */
+
+#contenedor-perfil-paciente {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 80px auto;
+    width: 40%;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#contenedor-perfil-paciente h2{
+    text-align: left;
+}
+
+.tabla-perfil{
+    margin-left: auto;
+    margin-right: auto;
+    width:80%
+}
+
+.tabla-perfil th{
+    text-align: left;
+    font-weight: normal;
+    color: #8c52ff;
+}
+
+.tabla-perfil td{
+    text-align: left;
+}
+
+.encabezado-perfil {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.btn-editar-perfil{
+    display: inline-block;
+    background-color: white;
+    border: 0;
+    border-radius: 50%;
+    margin: 0 10px;
+    padding: 5px;
+}
+
+.btn-editar-perfil:hover{
+    background-color: lightgray;
+}
+
+
+/*Sección de consultas*/
+
+.contenedor-consulta {
+    background-color: #fff;
+    border-radius: 15px;
+    border: gray 1px solid;
+    padding: 30px;
+    margin: 80px auto;
+    width: 80%;
+    max-width: 900px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.contenedor-consulta h2{
+    text-align: left;
+}
+
+.encabezado-consulta {
+    display: flex;
+    align-items: center;
+}
+
+.fecha-cita p{
+    display: flex;
+    align-items: center;
+    margin: 0px 20px;
+    background-color: #ede4ff;
+    border-radius: 10px;
+    padding: 5px;
+    color: #6015f5;
+
+}
+
+.tabla-consulta{
+    margin-left: auto;
+    margin-right: auto;
+    width:80%;
+    font-size: 15px;
+}
+
+.tabla-consulta th{
+    text-align: left;
+    font-weight: bold;
+}
+
+.tabla-consulta td{
+    text-align: left;
+}
+
+.contenedor-consultas-completadas{
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 80px auto;
+    width: 90%;
+    max-width: 1100px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* boton de impresión */
+
+.contenedor-imprimir{
+    position: fixed;
+    top: 100px;
+    right: 20px;
+}
+
+.btn-imprimir {
+    background-color: white;
+    padding: 30px;
+    margin: 80px auto;
+}
+
+.btn-imprimir {
+    display: block;
+    margin: 20px auto;
+    background-color: #8c52ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-imprimir:hover {
+    background-color: #555;
+}
+
+
+/* boton de regreso */
+
+.contenedor-regresar{
+    position: fixed;
+    top: 100px;
+    left: 20px;
+}
+
+.btn-regresar {
+    background-color: white;
+    padding: 30px;
+    margin: 80px auto;
+}
+
+.btn-regresar {
+    display: block;
+    margin: 20px auto;
+    background-color: #8c52ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-regresar:hover {
+    background-color: #555;
+}

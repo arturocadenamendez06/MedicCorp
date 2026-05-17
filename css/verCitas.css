@@ -1,0 +1,107 @@
+#contenedor-citas-reservadas {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 80px auto;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#contenedor-citas-reservadas h2{
+    text-align: left;
+}
+
+#contenido-citas-reservadas {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cita-reservada-componente {
+  background-color: #fff;
+  box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+  border: 1px solid gray;
+  border-radius: 40px;
+  width: auto;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;  
+  font-size: 16px;
+}
+
+.estado-cita {
+    display: inline-block;
+    background-color: #8c52ff;
+    border-radius: 10px;
+    margin: 0px 10px;
+    padding: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.fecha-cita {
+    display: inline-block;
+    padding: 3px;
+}
+
+.btn-editar-cita, .btn-eliminar-cita, .btn-registrar-cita {
+    display: inline-block;
+    background-color: white;
+    border: 0px;
+    border-radius: 50%;
+    margin: 0px 10px;
+    padding: 3px;
+}
+
+.btn-editar-cita :hover , .btn-eliminar-cita :hover, .btn-registrar-cita:hover {
+    background-color: lightgray;
+    border-radius: 50%;
+}
+
+
+
+
+#contenedor-citas-completadas {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 80px auto;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#contenedor-citas-completadas h2{
+    text-align: left;
+}
+
+#contenido-citas-completadas {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cita-completada-componente {
+  background-color: lightgray;
+  box-shadow: 0 4px 15px rgba(169, 169, 169, 0.3);
+  border: 1px solid gray;
+  border-radius: 40px;
+  width: auto;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;  
+  font-size: 16px;
+}
+
+#contenido-citas-completadas .estado-cita {
+    display: inline-block;
+    background-color: darkgray;
+    border-radius: 10px;
+    margin: 0px 10px;
+    padding: 5px;
+    font-weight: bold;
+    color: rgb(231, 231, 231);
+}

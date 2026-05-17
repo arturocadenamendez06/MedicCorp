@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero Institucional</title>
+    <link rel="stylesheet" href="../css/encabezado.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/historial.css">
+    
+    <style>
+        @media print{
+            body,html{
+                background-color: white;
+            }
+            #contenedor-Objetivo{
+                padding-top: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+
+            #acciones-Logros{
+                padding-top: 200px;
+                padding-bottom: 150px;
+                box-shadow: 0 4px 15px white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="encabezado">
+        <div class="encabezado-container">
+            <div class="logo-container">
+                MedicCorp
+            </div>
+            
+            <nav>
+                <ul class="nav">
+                    <li><a href="agendarCita.html">Agendar cita</a></li>
+                    <li><a href="verCitas.html">Ver citas</a></li>
+                    <li><a href="calendario.html">Calendario</a></li>
+                    <li><a href="verPacientes.html">Ver pacientes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="espaciado">
+    </div>
+
+    <main>
+        <section class="contenedor-imprimir">
+            <button class="btn-imprimir">Imprimir historial</button>
+        </section>
+
+        <section id="contenedor-perfil-paciente">
+
+            <!-- Aqui está la sección para el perfil del paciente -->
+            <div class="encabezado-perfil">
+                <h2>Perfil de [nombre_paciente]</h2>
+                <button class="btn-editar-perfil" onclick="window.location.href='editarPerfil.html'"><img src="../imagenes/pencil_4076.png" width="30px" height="30px" align="center" alt="editar"></button>
+            </div>
+
+            <!-- Este es un ejemplo del perfil, en el futuro probablemente requiera un formulario para consultas a la BD -->
+            <table class="tabla-perfil">
+                <tr>
+                    <th>Nombre completo</th>
+                    <th>Edad</th>
+                    <th>Sexo</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                
+            </table>
+        </section>
+
+        <!-- aquí se ingresa cada consulta completada y registrada -->
+        <section class="contenedor-consultas-completadas">
+
+            <!-- ejemplo de un consulta -->
+            <div class="contenedor-consulta">
+                <div class="encabezado-consulta">
+                    <div><h2>Consulta</h2></div>
+                    <div class="fecha-cita"><p>Viernes   12:30</p></div>    
+                </div>
+                <!-- aqui se ingresan los datos de cada consulta -->
+                <table class="tabla-consulta">
+                    <tr>
+                        <th style="width: 20%;">Temperatura corporal:</th>
+                        <td style="width: 20%;">2</td>
+                        <th style="width: 20%;">Diagnóstico:</th>
+                        <td>aqui va el diagnostico</td>
+                    </tr>
+                    <tr>
+                        <th>Peso:</th>
+                        <td>6</td>
+                        <th>Resultado de análisis:</th>
+                        <td>aqui va el resultado del analisis</td>
+                    </tr>
+                    <tr>
+                        <th>Altura:</th>
+                        <td>10</td>
+                        <th>Prescripciones:</th>
+                        <td>aqui va la prescripción</td>
+                    </tr>
+                    <tr>
+                        <th>Presión arterial:</th>
+                        <td>14</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </section>
+    </main>
+
+    <button onclick="regresarArriba()" id="botonSubir" title="Subir"><p><i class="arrow up"></i></p></button>
+</body>
+<script src="../js/index.js"></script>
+</html>
