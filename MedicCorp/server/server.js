@@ -10,7 +10,7 @@ dotenv.config();
 const DBService = require('./DBService');
 
 app.use(cors({
-    origin: 'http://127.0.0.1:5500',
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','http://localhost'],
     credentials: true
 }));
 
@@ -23,7 +23,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax'
     }
 }))
 
@@ -58,7 +60,8 @@ app.post('/iniciarSesion', async (req, res) => {
         req.session.user = {
             username: usuario,
             loggedIn: true,
-            rol: resultadoAuth.rol
+            rol: resultadoAuth.rol,
+            userId: resultadoAuth.id
         };
 
         console.log(req.session.user);
@@ -85,21 +88,30 @@ app.post('/iniciarSesion', async (req, res) => {
             rol: ''
         });
     }
-    /*
-    resultadoAuth
-    .then(data => res.json({success : data}))
-    .catch(err => console.log(err));*/
     
 });
 
-app.get('/logout', (req, res) => {
-    req.session.destroy();
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if(err){
+            return res.status(500).json({
+                success: false,
+                message: 'Error al cerrar sesión'
+            });
+        }
+
+        res.clearCookie('connect.sid');
+        res.json({
+            success: true,
+            message: 'Sesión cerrada'
+        });
+    });
 });
 
 //Probar que la sesión este activa **BORRAR DESPUÉS
 app.get('/session', (req, res) => {
     //console.log(req.session.user.rol);
-    res.json(req.session);
+    res.json(req.session.user);
 });
 
 /*

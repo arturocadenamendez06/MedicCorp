@@ -29,6 +29,8 @@ formularioRegistro.addEventListener('submit', async (e) => {
     .then(data => {
         if(data.success){
             console.log('User registered successfully');
+        }else{
+            console.log('Cannot register user');
         }
     });
 });

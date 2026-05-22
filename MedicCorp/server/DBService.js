@@ -83,13 +83,15 @@ class DBService {
                 return {
                 isfound: false,
                 rol: '',
+                id: ''
                 };
             }
             
-            console.log("Usuario encontrado: " + response[0].nombre_usuario);
+            //console.log("Usuario encontrado: " + response[0].nombre_usuario);
             return {
                 isfound: true,
                 rol: response[0].rol,
+                id: response[0].id_usuario
             };
             //return true;
 
@@ -98,6 +100,7 @@ class DBService {
             return {
                 isfound: false,
                 rol: '',
+                id: ''
             };
         }
     }
