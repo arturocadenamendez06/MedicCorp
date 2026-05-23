@@ -104,6 +104,47 @@ class DBService {
             };
         }
     }
+
+    async getAllPacientes() {
+        try {
+            //Buscar un usuario en MySQL con el nombre de usuario y contraseña proporcionados
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT pacientes.id_paciente, pacientes.nombre_paciente, pacientes.correo, pacientes.telefono FROM usuarios INNER JOIN pacientes ON usuarios.id_usuario = pacientes.id_usuario WHERE usuarios.estado_usuario = 'activo';";
+
+                connection.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            //console.log(response);
+            return response;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async deletePaciente(id) {
+        try {
+            id = parseInt(id, 10);//convertir el id a un número entero
+            
+            const reponse = await new Promise((resolve, reject) => {
+                const query = "UPDATE usuarios INNER JOIN pacientes ON usuarios.id_usuario = pacientes.id_usuario SET usuarios.estado_usuario = 'inactivo' WHERE pacientes.id_paciente = ?;";
+
+                connection.query(query, [id], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.affectedRows);
+                })
+            });
+            
+            //Si se editó una fila (affectedRows=1), se devuelve true, si no, false
+            return reponse === 1 ? true : false;
+
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
 }
 
 module.exports = DBService;

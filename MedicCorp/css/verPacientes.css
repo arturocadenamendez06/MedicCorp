@@ -132,7 +132,7 @@ th, td {
     background-color: #555;
 }
 
-.btn-eliminar-cita{
+.btn-eliminar-paciente{
     display: inline-block;
     background-color: white;
     border: 0px;
@@ -141,7 +141,7 @@ th, td {
     padding: 3px;
 }
 
-.btn-eliminar-cita :hover {
+.btn-eliminar-paciente :hover {
     background-color: lightgray;
     border-radius: 50%;
 }

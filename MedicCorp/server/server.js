@@ -65,7 +65,7 @@ app.post('/iniciarSesion', async (req, res) => {
         };
 
         console.log(req.session.user);
-        console.log(req.session.cookie);
+        //console.log(req.session.cookie);
         
         let userRol = '';
         switch(req.session.user.rol){
@@ -112,6 +112,26 @@ app.post('/logout', (req, res) => {
 app.get('/session', (req, res) => {
     //console.log(req.session.user.rol);
     res.json(req.session.user);
+});
+
+app.post('/medico/getAllPacientes', (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const resultadoPacientes = db.getAllPacientes();
+    
+    resultadoPacientes.then(data => res.json({data: data}))
+    .catch(err => console.log(err));
+});
+
+app.post('/medico/deletePaciente/:id', (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const {id} = req.params;
+
+    const result = db.deletePaciente(id);
+
+    //Cuando la consulta a la BD se resuelva, se envía la respuesta al frontend, si no, se imprime el error
+    result
+    .then(data => res.json({success: data}))
+    .catch(err => console.log(err));
 });
 
 /*
