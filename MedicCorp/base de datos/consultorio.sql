@@ -123,7 +123,8 @@ INSERT INTO `usuarios` (`id_usuario`, `estado_usuario`, `nombre_usuario`, `contr
 ALTER TABLE `citas`
   ADD PRIMARY KEY (`id_cita`),
   ADD KEY `id_paciente` (`id_paciente`),
-  ADD KEY `id_medico` (`id_medico`);
+  ADD KEY `id_medico` (`id_medico`),
+  ADD CONSTRAINT unique_cita UNIQUE (`id_medico`, `dia`, `hora`);
 
 --
 -- Indices de la tabla `medicos`

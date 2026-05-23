@@ -44,10 +44,18 @@
         <section id="contenedor-cita">
             <br><br><br>
             <div id="citaForm">
-                <form name="forma" action="" onsubmit="alert('enviando datos...')" method="post" enctype="">
+                <form name="forma" id="ReservaFormulario" action="" onsubmit="" method="post" enctype="">
                     <h2>¡Agende su cita ahora!</h2>
                     <!-- Campos del formulario -->
                     <table align="center">
+                        <tr>
+                            <td><label for="medico">¿Cuál médico?:</label></td>
+                            <td>
+                                <select name="medico" id="selectMedico" required>
+                                    
+                                </select>
+                            </td>
+                        </tr>
                         <tr>
                             <td><label for="diaCita">¿Qué día?:</label></td>
                             <td>
@@ -63,24 +71,24 @@
                         <tr>
                             <td><label for="horaCita">¿A qué hora?:</label></td>
                             <td>
-                                <select name="diaCita" id="diaCita" required size="1">
-                                    <option value='09:00' selected>09:00</option>
-                                    <option value='09:30' selected>09:30</option>
-                                    <option value='10:00' selected>10:00</option>
-                                    <option value='10:30' selected>10:30</option>
-                                    <option value='11:00' selected>11:00</option>
-                                    <option value='11:30' selected>11:30</option>
-                                    <option value='12:00' selected>12:00</option>
-                                    <option value='12:30' selected>12:30</option>
-                                    <option value='13:00' selected>13:00</option>
-                                    <option value='13:30' selected>13:30</option>
-                                    <option value='14:00' selected>14:00</option>
-                                    <option value='14:30' selected>14:30</option>
-                                    <option value='15:00' selected>15:00</option>
-                                    <option value='15:30' selected>15:30</option>
-                                    <option value='16:00' selected>16:00</option>
-                                    <option value='16:30' selected>16:30</option>
-                                    <option value='17:00' selected>17:00</option>
+                                <select name="horaCita" id="horaCita" required size="1">
+                                    <option value='09:00:00' selected>09:00</option>
+                                    <option value='09:30:00' >09:30</option>
+                                    <option value='10:00:00' >10:00</option>
+                                    <option value='10:30:00' >10:30</option>
+                                    <option value='11:00:00' >11:00</option>
+                                    <option value='11:30:00' >11:30</option>
+                                    <option value='12:00:00' >12:00</option>
+                                    <option value='12:30:00' >12:30</option>
+                                    <option value='13:00:00' >13:00</option>
+                                    <option value='13:30:00' >13:30</option>
+                                    <option value='14:00:00' >14:00</option>
+                                    <option value='14:30:00' >14:30</option>
+                                    <option value='15:00:00' >15:00</option>
+                                    <option value='15:30:00' >15:30</option>
+                                    <option value='16:00:00' >16:00</option>
+                                    <option value='16:30:00' >16:30</option>
+                                    <option value='17:00:00' >17:00</option>
                                 </select>
                             </td>
                         </tr>
@@ -97,4 +105,6 @@
 </body>
 <script src="../js/index.js"></script>
 <script src="../js/logout.js"></script>
+<script src="../js/cargarMedicos.js"></script>
+<script src="../js/reservarCitaPaciente.js"></script>
 </html>
