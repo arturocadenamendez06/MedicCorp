@@ -114,6 +114,14 @@ app.get('/session', (req, res) => {
     res.json(req.session.user);
 });
 
+app.post('/medico/getAllCitas', (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const resultadoCitas = db.getAllCitasDeMedico(req.session.user.userId);
+    
+    resultadoCitas.then(data => res.json({data: data}))
+    .catch(err => console.log(err));
+});
+
 app.post('/medico/getAllPacientes', (req, res) => {
     const db = DBService.getDBServiceInstance();
     const resultadoPacientes = db.getAllPacientes();
