@@ -199,6 +199,15 @@ app.post('/paciente/reservarCita', async (req, res) => {
 
 });
 */
+
+app.post('/paciente/getAllCitas', (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const resultadoCitas = db.getAllCitasDePaciente(req.session.user.userId);
+    
+    resultadoCitas.then(data => res.json({data: data}))
+    .catch(err => console.log(err));
+});
+
 app.post('/reservarCita', async (req, res) => {
     try {
         

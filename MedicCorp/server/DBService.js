@@ -455,6 +455,25 @@ class DBService {
 
     }
 
+    async getAllCitasDePaciente(idUsuario) {
+        try {
+            //Buscar las citas "Reservada" y "Completada" de un paciente
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT c.id_cita, c.id_paciente, c.id_medico, c.dia, c.hora, c.estado_cita FROM usuarios u INNER JOIN pacientes p ON u.id_usuario = p.id_usuario INNER JOIN citas c ON p.id_paciente = c.id_paciente WHERE c.estado_cita IN ('reservada', 'completada') AND u.id_usuario = ?;";
+
+                connection.query(query, [idUsuario], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            //console.log(response);
+            return response;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
     async getAllPacientes() {
         try {
             //Buscar un usuario en MySQL con el nombre de usuario y contraseña proporcionados
