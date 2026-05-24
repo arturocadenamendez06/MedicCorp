@@ -145,6 +145,59 @@ app.get('/medico', (req, res) => {
 
 });
 */
+
+//obtener medicos de la BD
+app.get('/obtenerMedicos', async(req, res) => {
+    const db = DBService.getDBServiceInstance();
+
+    try {
+        const medicos = await db.obtenerMedicos();
+        res.json(medicos);
+
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            error: 'Error obteniendo médicos'
+        });
+        
+    }
+
+
+});
+
+//reservar cita
+app.post('/paciente/reservarCita', async (req, res) => {
+    try {
+        
+        const usuario = req.session.user.userId;
+        console.log("Usuario: ", usuario);
+
+        const { medico, diaCita, horaCita } = req.body;
+
+        const db = DBService.getDBServiceInstance();
+
+        const resultado = await db.reservarCita(
+            usuario,
+            medico,
+            diaCita,
+            horaCita
+        );
+
+        res.json(resultado);
+
+    } catch(error){
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Error del servidor'
+        });
+
+    }
+
+});
+
 app.listen(port, () => {
     console.log('The server is running...');
 })
