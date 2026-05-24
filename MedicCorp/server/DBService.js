@@ -136,6 +136,8 @@ class DBService {
     }
 
     /* ----- CITAS ----- */
+
+    /* 
     async reservarCita(idUsuario, idMedico, diaCita, horaCita) {
         try {
             //encontrar id de paciente apartir del id de usuario
@@ -239,7 +241,219 @@ class DBService {
         }
 
     }
+    */
+    async reservarCita_paciente(idUsuario, idMedico, diaCita, horaCita) {
+        try {
+            //encontrar id de paciente apartir del id de usuario
+            await new Promise((resolve, reject) => {
+                connection.beginTransaction(err => {
+                    if (err) return reject(err);
 
+                    resolve();
+                });
+            });
+
+            const idPaciente = await new Promise((resolve, reject) => {
+
+                const query = `
+                    SELECT id_paciente
+                    FROM pacientes
+                    WHERE id_usuario = ?
+                `;
+
+                connection.query(
+                    query,
+                    [idUsuario],
+                    (err, results) => {
+                        if (err) return reject(err);
+
+                        // Verificar si existe paciente
+                        if (results.length === 0) {
+                            return reject(new Error('Paciente no encontrado'));
+                        }
+
+                        resolve(results[0].id_paciente);
+                    }
+                );
+            });
+
+            // Intentar insertar cita
+            await new Promise((resolve, reject) => {
+                const query = `
+                    INSERT INTO citas(
+                        id_paciente,
+                        id_medico,
+                        dia,
+                        hora,
+                        estado_cita
+                    )
+                    VALUES (?, ?, ?, ?, ?)
+                `;
+
+                connection.query(
+                    query,
+                    [
+                        idPaciente,
+                        idMedico,
+                        diaCita,
+                        horaCita,
+                        'reservada'
+                    ],
+                    (err, results) => {
+                        if (err) reject(err);
+
+                        resolve(results);
+
+                    }
+                );
+
+            });
+
+            await new Promise((resolve, reject) => {
+
+                connection.commit(err => {
+                    if (err) reject(err);
+
+                    resolve();
+                });
+            });
+
+            return {
+                success: true
+            };
+
+        } catch (error) {
+            console.log(error);
+
+            await new Promise(resolve => {
+                connection.rollback(() => resolve());
+            });
+
+            // Error duplicate key
+            if (error.code === 'ER_DUP_ENTRY') {
+                return {
+                    success: false,
+                    message: 'La cita ya fue reservada'
+                };
+            }
+
+            return {
+                success: false,
+                message: error.message || 'Error reservando cita'
+            };
+
+        }
+
+    }
+
+    async reservarCita_medico(idPaciente, idUsuario, diaCita, horaCita) {
+        try {
+
+            //console.log("Paciente: ", idPaciente, " Usuario(medico): ", idUsuario);
+
+            //encontrar id de medico apartir del id de usuario
+            await new Promise((resolve, reject) => {
+                connection.beginTransaction(err => {
+                    if (err) return reject(err);
+
+                    resolve();
+                });
+            });
+
+            const idMedico = await new Promise((resolve, reject) => {
+                
+                const query = `
+                    SELECT id_medico
+                    FROM medicos
+                    WHERE id_usuario = ?
+                `;
+
+                connection.query(
+                    query,
+                    [idUsuario],
+                    (err, results) => {
+                        if (err) return reject(err);
+
+                        // Verificar si existe paciente
+                        if (results.length === 0) {
+                            return reject(new Error('Medico no encontrado'));
+                        }
+
+                        resolve(results[0].id_medico);
+                    }
+                );
+            });
+
+            //console.log("Medico: ", idMedico);
+
+            // Intentar insertar cita
+            await new Promise((resolve, reject) => {
+                const query = `
+                    INSERT INTO citas(
+                        id_paciente,
+                        id_medico,
+                        dia,
+                        hora,
+                        estado_cita
+                    )
+                    VALUES (?, ?, ?, ?, ?)
+                `;
+
+                connection.query(
+                    query,
+                    [
+                        idPaciente,
+                        idMedico,
+                        diaCita,
+                        horaCita,
+                        'reservada'
+                    ],
+                    (err, results) => {
+                        if (err) reject(err);
+
+                        resolve(results);
+
+                    }
+                );
+
+            });
+
+            await new Promise((resolve, reject) => {
+
+                connection.commit(err => {
+                    if (err) reject(err);
+
+                    resolve();
+                });
+            });
+
+            return {
+                success: true
+            };
+
+        } catch (error) {
+            console.log(error);
+
+            await new Promise(resolve => {
+                connection.rollback(() => resolve());
+            });
+
+            // Error duplicate key
+            if (error.code === 'ER_DUP_ENTRY') {
+                return {
+                    success: false,
+                    message: 'La cita ya fue reservada'
+                };
+            }
+
+            return {
+                success: false,
+                message: error.message || 'Error reservando cita'
+            };
+
+        }
+
+    }
 
     async getAllPacientes() {
         try {

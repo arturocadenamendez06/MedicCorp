@@ -8,7 +8,24 @@ formularioReserva.addEventListener('submit', async (e) => {
     const formData = new FormData(formularioReserva);
     const data = Object.fromEntries(formData);
 
-    console.log('Form data to be sent:', data);
+    //console.log('Form data to be sent:', data);
+
+    //obtener el id del paciente seleccionado
+    const listaPacientes = document.getElementById('listaPacientes');
+    const optionSeleccionada = [...listaPacientes.options].find(option => option.value === data.paciente);
+
+     // validar si existe
+    if (!optionSeleccionada) {
+
+        alert('Seleccione un paciente válido');
+
+        return;
+
+    }
+
+    const idPaciente = optionSeleccionada.dataset.id;
+
+    //console.log('ID paciente:', idPaciente);
     
     fetch('http://localhost:5000/reservarCita', {
         headers: {
@@ -17,7 +34,7 @@ formularioReserva.addEventListener('submit', async (e) => {
         credentials: 'include',
         method: 'POST',
         body: JSON.stringify({ 
-            medico: data.medico,
+            paciente: idPaciente,
             diaCita: data.diaCita,
             horaCita: data.horaCita
         })

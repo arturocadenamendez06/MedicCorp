@@ -165,7 +165,8 @@ app.get('/obtenerMedicos', async(req, res) => {
 
 });
 
-//reservar cita
+//BORRAR!!!!!!, VOY A HACERLO MÁS GENERAL PARA QUE REVISE ROLES Y PUEDA PONERLO EN AMBAS INTERFACES
+/* 
 app.post('/paciente/reservarCita', async (req, res) => {
     try {
         
@@ -182,6 +183,63 @@ app.post('/paciente/reservarCita', async (req, res) => {
             diaCita,
             horaCita
         );
+
+        res.json(resultado);
+
+    } catch(error){
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Error del servidor'
+        });
+
+    }
+
+});
+*/
+app.post('/reservarCita', async (req, res) => {
+    try {
+        
+        const usuario = req.session.user.userId;
+        const rol = req.session.user.rol;
+
+        //console.log("Usuario: ", usuario, " Rol: ", rol);
+
+        const db = DBService.getDBServiceInstance();
+
+
+        let resultado;
+
+        if(rol === "paciente"){
+            const { medico, diaCita, horaCita } = req.body;
+            
+            resultado = await db.reservarCita_paciente(
+                usuario,
+                medico,
+                diaCita,
+                horaCita
+            );
+        }
+
+        else if (rol === "medico"){
+            const { paciente, diaCita, horaCita } = req.body;
+
+            resultado = await db.reservarCita_medico(
+                paciente,
+                usuario,
+                diaCita,
+                horaCita
+            );
+        }
+
+        else {
+            return res.status(403).json({
+                success: false,
+                message: "Rol no autorizado"
+            });
+        }
 
         res.json(resultado);
 
