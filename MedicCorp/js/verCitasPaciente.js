@@ -32,7 +32,7 @@ function loadCitasReservadasYCompletadas(data){
             citasReservadasHTML += `<span class="estado-cita">Reservada</span>`;
             citasReservadasHTML += `<p class="fecha-cita">${dia} ${hora}</p>`;
             citasReservadasHTML += `<button class="btn-editar-cita"><img class="editar-cita" src="../imagenes/pencil_4076.png" data-id="${id_cita}" width="30px" height="30px" align="center" alt="editar"></button>`;
-            citasReservadasHTML += `<button class="btn-eliminar-cita" data-id="${id_cita}><img class="eliminar-cita" src="../imagenes/basurero.png" data-id="${id_cita}" width="30px" height="30px" align="center" alt="eliminar"></button>`;
+            citasReservadasHTML += `<button class="btn-eliminar-cita"><img class="eliminar-cita" src="../imagenes/basurero.png" data-id="${id_cita}" width="30px" height="30px" align="center" alt="eliminar"></button>`;
             citasReservadasHTML += "</div>";
         }
         else if(estado_cita === 'completada'){
