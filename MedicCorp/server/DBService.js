@@ -534,6 +534,29 @@ class DBService {
             return false;
         }
     }
+
+    async deleteCita(id) {
+        try {
+            id = parseInt(id, 10);//convertir el id a un número entero
+            
+            const response = await new Promise((resolve, reject) => {
+                const query = "DELETE FROM citas WHERE id_cita = ?;";
+
+                connection.query(query, [id], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.affectedRows);
+                })
+            });
+            
+            //Si se eliminó una fila (affectedRows=1), se devuelve true, si no, false
+            return response === 1 ? true : false;
+
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
 }
 
 module.exports = DBService;

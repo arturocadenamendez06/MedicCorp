@@ -273,6 +273,37 @@ app.post('/reservarCita', async (req, res) => {
 
 });
 
+app.delete('/citas/:id', async (req, res) => {
+    try {
+        const db = DBService.getDBServiceInstance();
+        const { id } = req.params;
+
+        // eliminar cita
+        const resultado = await db.deleteCita(id);
+
+        // verificar si se eliminó correctamente
+        if(!resultado){
+            return res.json({
+                success: false,
+                message: 'No se pudo eliminar la cita'
+            });
+        }
+        
+        res.json({
+            success: true
+        });
+
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error del servidor'
+        });
+
+    }
+
+});
+
 app.listen(port, () => {
     console.log('The server is running...');
 })
