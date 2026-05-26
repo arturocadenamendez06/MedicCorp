@@ -304,6 +304,34 @@ app.delete('/citas/:id', async (req, res) => {
 
 });
 
+app.get('/citas/:id', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const {id} = req.params;
+
+    try {
+        const resultado = await db.getCita(id);
+        console.log("Respuesta del servidor: ", resultado);
+
+
+        //si no se encuentra la cita entonces manda un error
+        if(resultado.length === 0){
+            res.status(500).json({
+                error: 'Error: no se encontró la cita'
+            });
+        }
+
+        res.json(resultado);
+
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            error: 'Error obteniendo cita'
+        });
+        
+    }
+    
+});
+
 app.listen(port, () => {
     console.log('The server is running...');
 })
