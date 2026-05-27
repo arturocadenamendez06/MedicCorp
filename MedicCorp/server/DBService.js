@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+const EncryptionService = require('./encryption');
 let instance = null;//para que no se repita la instancia del objeto DBservice cada vez que se corra este servicio
 dotenv.config();
 
@@ -582,6 +583,111 @@ class DBService {
         }
     }
 
+    async guardarReporteConsulta(id_cita, temperatura, peso, altura, presion_arterial, diagnostico, prescripcion, resultado_analisis) {
+        try {
+            // Validar que se proporcionó el id_cita
+            if (!id_cita) {
+                return {
+                    success: false,
+                    message: 'ID de cita es requerido'
+                };
+            }
+            
+            // Encriptar datos sensibles
+            const encryptedTemperatura = temperatura ? EncryptionService.encrypt(temperatura) : null;
+            const encryptedPeso = peso ? EncryptionService.encrypt(peso) : null;
+            const encryptedAltura = altura ? EncryptionService.encrypt(altura) : null;
+            const encryptedPresionArterial = presion_arterial ? EncryptionService.encrypt(presion_arterial) : null;
+            const encryptedDiagnostico = diagnostico ? EncryptionService.encrypt(diagnostico) : null;
+            const encryptedPrescripcion = prescripcion ? EncryptionService.encrypt(prescripcion) : null;
+            const encryptedResultados = resultado_analisis ? EncryptionService.encrypt(resultado_analisis) : null;
+            
+            //Insertar el registro de consulta con datos encriptados
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    INSERT INTO registros_consulta (
+                        id_cita, 
+                        temperatura,
+                        peso, 
+                        altura, 
+                        presion_arterial, 
+                        diagnostico, 
+                        prescripcion, 
+                        resultados_analisis
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                `;
+                
+                connection.query(
+                    query, 
+                    [
+                        id_cita, 
+                        encryptedTemperatura,  // Dato encriptado 
+                        encryptedPeso,  // Dato encriptado 
+                        encryptedAltura,  // Dato encriptado 
+                        encryptedPresionArterial,  // Dato encriptado 
+                        encryptedDiagnostico,  // Dato encriptado
+                        encryptedPrescripcion,  // Dato encriptado
+                        encryptedResultados     // Dato encriptado
+                    ], 
+                    (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    }
+                );
+            });
+            
+            // Verificar si se insertó correctamente
+            if (response.affectedRows === 1) {
+                return {
+                    success: true,
+                    message: 'Reporte de consulta guardado correctamente (datos encriptados)',
+                    id_consulta: response.insertId
+                };
+            } else {
+                return {
+                    success: false,
+                    message: 'No se pudo guardar el reporte'
+                };
+            }
+
+        } catch (error) {
+            console.log(error);
+            return {
+                success: false,
+                message: error.message || 'Error guardando el reporte'
+            };
+        }
+    }
+
+    async getConsultaConDesencriptacion(id_cita) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    SELECT * FROM registros_consulta 
+                    WHERE id_cita = ?
+                `;
+                
+                connection.query(query, [id_cita], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            
+            if (response.length === 0) {
+                return null;
+            }
+            
+            // Desencriptar los datos sensibles
+            const consulta = response[0];
+            const decryptedConsulta = EncryptionService.decryptMedicalRecord(consulta);
+            
+            return decryptedConsulta;
+        
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 }
 
 module.exports = DBService;
