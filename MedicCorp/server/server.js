@@ -332,6 +332,34 @@ app.get('/citas/:id', async (req, res) => {
     
 });
 
+app.patch('/citas/:id', async (req, res) => {
+    try {
+        const db = DBService.getDBServiceInstance();
+        const idCita = req.params.id;
+
+        //console.log("ID de cita:", idCita);
+
+        const { diaCita, horaCita } = req.body;
+
+        //const usuario = req.session.user.userId;
+        const rol = req.session.user.rol;
+
+        const resultado = await db.editCita(idCita, diaCita, horaCita);
+        res.json(resultado);
+
+    } catch(error){
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Error del servidor'
+        });
+
+    }
+    
+});
+
 app.listen(port, () => {
     console.log('The server is running...');
 })

@@ -582,6 +582,83 @@ class DBService {
         }
     }
 
+    async editCita(idCita, diaCita, horaCita) {
+        try {
+            idCita = parseInt(idCita, 10);
+            
+            await new Promise((resolve, reject) => {
+                connection.beginTransaction(err => {
+                    if (err) return reject(err);
+
+                    resolve();
+                });
+            });
+
+            // Intentar editar cita
+            const result = await new Promise((resolve, reject) => {
+                const query = "UPDATE citas SET dia = ?, hora = ? WHERE id_cita = ?;";
+
+                connection.query(
+                    query,
+                    [diaCita, horaCita, idCita],
+                    (err, results) => {
+                        if (err) reject(err);
+
+                        resolve(results);
+
+                    }
+                );
+
+            });
+
+            // se verifica si existe la cita
+            if (result.affectedRows === 0) {
+                await new Promise(resolve => {
+                    connection.rollback(() => resolve());
+                });
+                
+                return {
+                    success: false,
+                    message: 'La cita no existe'
+                };
+            }
+
+            await new Promise((resolve, reject) => {
+
+                connection.commit(err => {
+                    if (err) reject(err);
+
+                    resolve();
+                });
+            });
+
+            return {
+                success: true
+            };
+
+        } catch (error) {
+            console.log(error);
+
+            await new Promise(resolve => {
+                connection.rollback(() => resolve());
+            });
+
+            // Error duplicate key
+            if (error.code === 'ER_DUP_ENTRY') {
+                return {
+                    success: false,
+                    message: 'La cita ya fue tomada, intente agendarla en otra fecha'
+                };
+            }
+
+            return {
+                success: false,
+                message: error.message || 'Error editando cita'
+            };
+
+        }
+    }
+
 }
 
 module.exports = DBService;
