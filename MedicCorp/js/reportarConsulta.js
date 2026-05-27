@@ -48,6 +48,9 @@ async function cargarInfoCita(idCita) {
 }
 
 // Guardar el reporte de consulta
+// reportarConsulta.js - Actualizar la función guardarReporteConsulta
+
+// Guardar el reporte de consulta
 async function guardarReporteConsulta(event) {
     event.preventDefault();
     
@@ -67,7 +70,7 @@ async function guardarReporteConsulta(event) {
         return;
     }
     
-    // Mostrar indicador de carga (opcional)
+    // Mostrar indicador de carga
     const submitBtn = document.querySelector('#formReporteConsulta button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Guardando...';
@@ -79,7 +82,7 @@ async function guardarReporteConsulta(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include', // Para enviar cookies de sesión
+            credentials: 'include',
             body: JSON.stringify({
                 id_cita: parseInt(id_cita),
                 temperatura: temperatura || null,
@@ -95,8 +98,9 @@ async function guardarReporteConsulta(event) {
         const result = await response.json();
         
         if (result.success) {
-            mostrarMensaje('Reporte guardado exitosamente', 'success');
-            // Limpiar el formulario después de guardar
+            mostrarMensaje(result.message || 'Reporte guardado exitosamente', 'success');
+            
+            // Limpiar el formulario
             document.getElementById('formReporteConsulta').reset();
             
             // Redirigir después de 1.5 segundos

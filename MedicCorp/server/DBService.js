@@ -583,6 +583,7 @@ class DBService {
         }
     }
 
+    // DBService.js - Reemplazar el método guardarReporteConsulta con este
     async guardarReporteConsulta(id_cita, temperatura, peso, altura, presion_arterial, diagnostico, prescripcion, resultado_analisis) {
         try {
             // Validar que se proporcionó el id_cita
@@ -602,46 +603,87 @@ class DBService {
             const encryptedPrescripcion = prescripcion ? EncryptionService.encrypt(prescripcion) : null;
             const encryptedResultados = resultado_analisis ? EncryptionService.encrypt(resultado_analisis) : null;
             
-            //Insertar el registro de consulta con datos encriptados
-            const response = await new Promise((resolve, reject) => {
-                const query = `
-                    INSERT INTO registros_consulta (
-                        id_cita, 
-                        temperatura,
-                        peso, 
-                        altura, 
-                        presion_arterial, 
-                        diagnostico, 
-                        prescripcion, 
-                        resultados_analisis
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                `;
-                
-                connection.query(
-                    query, 
-                    [
-                        id_cita, 
-                        encryptedTemperatura,  // Dato encriptado 
-                        encryptedPeso,  // Dato encriptado 
-                        encryptedAltura,  // Dato encriptado 
-                        encryptedPresionArterial,  // Dato encriptado 
-                        encryptedDiagnostico,  // Dato encriptado
-                        encryptedPrescripcion,  // Dato encriptado
-                        encryptedResultados     // Dato encriptado
-                    ], 
-                    (err, result) => {
-                        if (err) reject(new Error(err.message));
-                        resolve(result);
+            // Usar una transacción para asegurar que ambas operaciones se completen
+            const result = await new Promise((resolve, reject) => {
+                connection.beginTransaction(async (err) => {
+                    if (err) return reject(err);
+
+                    try {
+                        // 1. Insertar el registro de consulta
+                        const insertQuery = `
+                            INSERT INTO registros_consulta (
+                                id_cita, 
+                                temperatura,
+                                peso, 
+                                altura, 
+                                presion_arterial, 
+                                diagnostico, 
+                                prescripcion, 
+                                resultados_analisis
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        `;
+                        
+                        connection.query(
+                            insertQuery, 
+                            [
+                                id_cita, 
+                                encryptedTemperatura,
+                                encryptedPeso,
+                                encryptedAltura,
+                                encryptedPresionArterial,
+                                encryptedDiagnostico,
+                                encryptedPrescripcion,
+                                encryptedResultados
+                            ], 
+                            (err, insertResult) => {
+                                if (err) {
+                                    return connection.rollback(() => reject(err));
+                                }
+                                
+                                // 2. Actualizar el estado de la cita a 'completada'
+                                const updateQuery = `
+                                    UPDATE citas 
+                                    SET estado_cita = 'completada' 
+                                    WHERE id_cita = ?
+                                `;
+                                
+                                connection.query(updateQuery, [id_cita], (err, updateResult) => {
+                                    if (err) {
+                                        return connection.rollback(() => reject(err));
+                                    }
+                                
+                                    // Confirmar la transacción
+                                    connection.commit((err) => {
+                                        if (err) {
+                                            return connection.rollback(() => reject(err));
+                                        }
+                                        
+                                        resolve({
+                                            insertResult: insertResult,
+                                            updateResult: updateResult
+                                        });
+                                    });
+                                });
+                            }
+                        );
+                    } catch (error) {
+                        connection.rollback(() => reject(error));
                     }
-                );
+                });
             });
             
-            // Verificar si se insertó correctamente
-            if (response.affectedRows === 1) {
+            // Verificar si ambas operaciones fueron exitosas
+            if (result.insertResult.affectedRows === 1 && result.updateResult.affectedRows === 1) {
                 return {
                     success: true,
-                    message: 'Reporte de consulta guardado correctamente (datos encriptados)',
-                    id_consulta: response.insertId
+                    message: 'Reporte guardado y cita marcada como completada',
+                    id_consulta: result.insertResult.insertId
+                };
+            } else if (result.insertResult.affectedRows === 1 && result.updateResult.affectedRows === 0) {
+                // Esto no debería ocurrir si la cita existe
+                return {
+                    success: false,
+                    message: 'Reporte guardado pero no se pudo actualizar el estado de la cita'
                 };
             } else {
                 return {
@@ -649,7 +691,7 @@ class DBService {
                     message: 'No se pudo guardar el reporte'
                 };
             }
-
+        
         } catch (error) {
             console.log(error);
             return {
