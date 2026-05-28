@@ -402,6 +402,86 @@ app.post('/guardarReporteConsulta', async (req, res) => {
         });
     }
 });
+    
+app.patch('/citas/:id', async (req, res) => {
+    try {
+        const db = DBService.getDBServiceInstance();
+        const idCita = req.params.id;
+
+        //console.log("ID de cita:", idCita);
+
+        const { diaCita, horaCita } = req.body;
+
+        //const usuario = req.session.user.userId;
+        const rol = req.session.user.rol;
+
+        const resultado = await db.editCita(idCita, diaCita, horaCita);
+        res.json(resultado);
+
+    } catch(error){
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Error del servidor'
+        });
+
+    }
+    
+});
+
+
+app.get('/paciente/:id', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const { id } = req.params;
+
+    try {
+        const paciente = await db.getPacienteById(id);
+        
+        if (!paciente) {
+            return res.status(404).json({
+                success: false,
+                message: 'Paciente no encontrado'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: paciente
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo datos del paciente'
+        });
+    }
+});
+
+// Agrega esto después del endpoint /paciente/:id
+
+app.get('/paciente/:id/consultas', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const { id } = req.params;
+
+    try {
+        const consultas = await db.getConsultasByPacienteId(id);
+        
+        res.json({
+            success: true,
+            data: consultas
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo las consultas del paciente'
+        });
+    }
+});
 
 app.listen(port, () => {
     console.log('The server is running...');

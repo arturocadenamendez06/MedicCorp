@@ -5,6 +5,7 @@ const idCita = params.get('id');
 
 //console.log(idCita);
 
+// Evento para cargar los datos de la cita en el formulario
 async function cargarCita() {
     try {
         const respuesta = await fetch(`http://localhost:5000/citas/${idCita}`, {

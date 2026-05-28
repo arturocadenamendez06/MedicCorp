@@ -730,6 +730,145 @@ class DBService {
             return null;
         }
     }
+    async editCita(idCita, diaCita, horaCita) {
+        try {
+            idCita = parseInt(idCita, 10);
+            
+            await new Promise((resolve, reject) => {
+                connection.beginTransaction(err => {
+                    if (err) return reject(err);
+
+                    resolve();
+                });
+            });
+
+            // Intentar editar cita
+            const result = await new Promise((resolve, reject) => {
+                const query = "UPDATE citas SET dia = ?, hora = ? WHERE id_cita = ?;";
+
+                connection.query(
+                    query,
+                    [diaCita, horaCita, idCita],
+                    (err, results) => {
+                        if (err) reject(err);
+
+                        resolve(results);
+
+                    }
+                );
+
+            });
+
+            // se verifica si existe la cita
+            if (result.affectedRows === 0) {
+                await new Promise(resolve => {
+                    connection.rollback(() => resolve());
+                });
+                
+                return {
+                    success: false,
+                    message: 'La cita no existe'
+                };
+            }
+
+            await new Promise((resolve, reject) => {
+
+                connection.commit(err => {
+                    if (err) reject(err);
+
+                    resolve();
+                });
+            });
+
+            return {
+                success: true
+            };
+
+        } catch (error) {
+            console.log(error);
+
+            await new Promise(resolve => {
+                connection.rollback(() => resolve());
+            });
+
+            // Error duplicate key
+            if (error.code === 'ER_DUP_ENTRY') {
+                return {
+                    success: false,
+                    message: 'La cita ya fue tomada, intente agendarla en otra fecha'
+                };
+            }
+
+            return {
+                success: false,
+                message: error.message || 'Error editando cita'
+            };
+
+        }
+    }
+    
+    async getPacienteById(idPaciente) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    SELECT p.id_paciente, p.nombre_paciente, p.direccion, p.correo, p.telefono, p.edad, p.sexo
+                    FROM pacientes p
+                    INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+                    WHERE p.id_paciente = ? AND u.estado_usuario = 'activo'
+                `;
+                
+                connection.query(query, [idPaciente], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            
+            if (response.length === 0) {
+                return null;
+            }
+            
+            return response[0];
+        
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    // Agrega este método después del método getPacienteById 
+    async getConsultasByPacienteId(idPaciente) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    SELECT rc.*, c.dia, c.hora 
+                    FROM registros_consulta rc
+                    INNER JOIN citas c ON rc.id_cita = c.id_cita
+                    WHERE c.id_paciente = ?
+                    ORDER BY c.id_cita DESC
+                `;
+                
+                connection.query(query, [idPaciente], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            
+            if (response.length === 0) {
+                return [];
+            }
+            
+            // Desencriptar cada consulta
+            const decryptedConsultas = response.map(consulta => {
+                return EncryptionService.decryptMedicalRecord(consulta);
+            });
+            
+            return decryptedConsultas;
+        
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
 }
 
 module.exports = DBService;
