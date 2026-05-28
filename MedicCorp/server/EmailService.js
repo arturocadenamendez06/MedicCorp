@@ -155,6 +155,22 @@ class EmailService {
 
     }
 
+    async enviarNotificacionEliminarCita(correo, nombre, fecha, hora) {
+        const mensaje = `
+            <h2>Hola ${nombre}</h2>
+            <p>Se canceló la cita acordada en esta fecha:</p>
+            <p>
+                <b>-Fecha:</b> ${fecha}<br>
+                <b>-Hora:</b> ${hora}
+            </p>
+            <p></p>
+            <p>Lamentamos la incoveniencia.</p>
+        `;
+
+        return await this.enviarCorreo(correo, `Cita cancelada (${fecha}, ${hora})`, mensaje);
+
+    }
+
 }
 
 module.exports = EmailService;
