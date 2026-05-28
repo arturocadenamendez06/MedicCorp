@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const DBService = require('./DBService');
+const EmailService = require('./EmailService');
 
 app.use(cors({
     origin: ['http://localhost:5500','http://127.0.0.1:5500','http://localhost'],
@@ -225,7 +226,7 @@ app.post('/reservarCita', async (req, res) => {
         //console.log("Usuario: ", usuario, " Rol: ", rol);
 
         const db = DBService.getDBServiceInstance();
-
+        const email = EmailService.getEmailServiceInstance();
 
         let resultado;
 
@@ -249,6 +250,21 @@ app.post('/reservarCita', async (req, res) => {
                 diaCita,
                 horaCita
             );
+
+            //si la reserva de citas es exitosa y fue realizada por un médico entonces se envia un mensaje por correo al paciente
+            if(resultado.success){
+                const pacienteData = await db.getPacienteByIdPaciente(paciente);
+
+                if(!pacienteData.isfound){
+                    return res.json({
+                        success: true,
+                        message: "La cita fue reservada exitosamente pero no se envio correo al paciente"
+                    });
+                }
+
+                const respuestaCorreo = email.enviarNotificacionReservaCita(pacienteData.paciente.correo, pacienteData.paciente.nombre_paciente, diaCita, horaCita);
+            }
+
         }
 
         else {
