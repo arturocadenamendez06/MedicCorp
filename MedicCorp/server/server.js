@@ -460,6 +460,34 @@ app.get('/paciente/:id', async (req, res) => {
     }
 });
 
+app.get('/consultarPaciente', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const idUsuario = req.session.user.userId;
+
+    try {
+        const paciente = await db.getPacienteByUserId(idUsuario);
+        
+        if (!paciente) {
+            return res.status(404).json({
+                success: false,
+                message: 'Paciente no encontrado'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: paciente
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo datos del paciente'
+        });
+    }
+});
+
 // Agrega esto después del endpoint /paciente/:id
 
 app.get('/paciente/:id/consultas', async (req, res) => {

@@ -835,6 +835,29 @@ class DBService {
         }
     }
 
+    async getPacienteByUserId(idUsuario) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `SELECT p.id_paciente, p.nombre_paciente, p.direccion, p.correo, p.telefono, p.edad, p.sexo FROM pacientes p INNER JOIN usuarios u ON p.id_usuario = u.id_usuario WHERE p.id_usuario = ? AND u.estado_usuario = 'activo'`;
+                
+                connection.query(query, [idUsuario], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            
+            if (response.length === 0) {
+                return null;
+            }
+            
+            return response[0];
+        
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
     // Agrega este método después del método getPacienteById 
     async getConsultasByPacienteId(idPaciente) {
         try {
