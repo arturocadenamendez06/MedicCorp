@@ -13,6 +13,7 @@ const SECRET_KEY = process.env.ENCRYPTION_KEY || '0123456789abcdef0123456789abcd
 const IV_LENGTH = 16;
 
 const DBService = require('./DBService');
+const EmailService = require('./EmailService');
 
 
 app.use(cors({
@@ -231,7 +232,7 @@ app.post('/reservarCita', async (req, res) => {
         //console.log("Usuario: ", usuario, " Rol: ", rol);
 
         const db = DBService.getDBServiceInstance();
-
+        const email = EmailService.getEmailServiceInstance();
 
         let resultado;
 
@@ -255,6 +256,21 @@ app.post('/reservarCita', async (req, res) => {
                 diaCita,
                 horaCita
             );
+
+            //si la reserva de citas es exitosa y fue realizada por un médico entonces se envia un mensaje por correo al paciente
+            if(resultado.success){
+                const pacienteData = await db.getPacienteByIdPaciente(paciente);
+
+                if(!pacienteData.isfound){
+                    return res.json({
+                        success: true,
+                        message: "La cita fue reservada exitosamente pero no se envio correo al paciente"
+                    });
+                }
+
+                const respuestaCorreo = email.enviarNotificacionReservaCita(pacienteData.paciente.correo, pacienteData.paciente.nombre_paciente, diaCita, horaCita);
+            }
+
         }
 
         else {
@@ -282,8 +298,23 @@ app.post('/reservarCita', async (req, res) => {
 app.delete('/citas/:id', async (req, res) => {
     try {
         const db = DBService.getDBServiceInstance();
+        const email = EmailService.getEmailServiceInstance();
         const { id } = req.params;
 
+        const usuario = req.session.user.userId;
+        const rol = req.session.user.rol;
+
+        //conseguir cita antes de eliminarla para enviar la información por correo
+        const citaData = await db.getCita(id);
+        if(citaData.length === 0){
+             return res.json({
+                success: false,
+                message: 'No se pudo encontrar la cita a eliminar'
+            });
+        }
+
+        const cita = citaData[0];
+        
         // eliminar cita
         const resultado = await db.deleteCita(id);
 
@@ -293,6 +324,20 @@ app.delete('/citas/:id', async (req, res) => {
                 success: false,
                 message: 'No se pudo eliminar la cita'
             });
+        }
+
+        //si el usuario es un médico entonces se envia un correo al paciente de la eliminación de la cita
+        if(rol === "medico"){
+            const pacienteData = await db.getPacienteByIdPaciente(cita.id_paciente);
+
+            if(!pacienteData.isfound){
+                return res.json({
+                    success: true,
+                    message: "La cita fue eliminada exitosamente pero no se envio correo al paciente"
+                });
+            }
+
+            const respuestaCorreo = email.enviarNotificacionEliminarCita(pacienteData.paciente.correo, pacienteData.paciente.nombre_paciente, cita.dia, cita.hora);
         }
         
         res.json({

@@ -340,7 +340,8 @@ class DBService {
             });
 
             return {
-                success: true
+                success: true,
+                message: "Cita reservada exitosamente"
             };
 
         } catch (error) {
@@ -449,7 +450,8 @@ class DBService {
             });
 
             return {
-                success: true
+                success: true,
+                message: "Cita reservada exitosamente"
             };
 
         } catch (error) {
@@ -511,6 +513,41 @@ class DBService {
 
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    //conseguir el correo del paciente por medio del id del paciente
+    async getPacienteByIdPaciente(idPaciente){
+        try {            
+            const response = await new Promise((resolve, reject) => {
+
+                const query = `SELECT * FROM pacientes WHERE id_paciente = ?;`;
+
+                connection.query(query, [idPaciente], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+
+            });
+
+            if(response.length === 0){
+                return{
+                    isfound: false,
+                    paciente: null
+                };
+            }
+
+            return {
+                isfound: true,
+                paciente: response[0]
+            };
+
+        } catch (error) {
+            console.log(error);
+            return{
+                isfound: false,
+                paciente: []
+            };
         }
     }
 
