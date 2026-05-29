@@ -28,9 +28,10 @@ formularioRegistro.addEventListener('submit', async (e) => {
     .then(response => response.json())
     .then(data => {
         if(data.success){
-            console.log('User registered successfully');
+            alert('User registered successfully');
+            window.location.href = `inicioSesion.html`;
         }else{
-            console.log('Cannot register user');
+            alert('Cannot register user');
         }
     });
 });
