@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+const EncryptionService = require('./encryption');
 let instance = null;//para que no se repita la instancia del objeto DBservice cada vez que se corra este servicio
 dotenv.config();
 
@@ -619,6 +620,153 @@ class DBService {
         }
     }
 
+    // DBService.js - Reemplazar el método guardarReporteConsulta con este
+    async guardarReporteConsulta(id_cita, temperatura, peso, altura, presion_arterial, diagnostico, prescripcion, resultado_analisis) {
+        try {
+            // Validar que se proporcionó el id_cita
+            if (!id_cita) {
+                return {
+                    success: false,
+                    message: 'ID de cita es requerido'
+                };
+            }
+            
+            // Encriptar datos sensibles
+            const encryptedTemperatura = temperatura ? EncryptionService.encrypt(temperatura) : null;
+            const encryptedPeso = peso ? EncryptionService.encrypt(peso) : null;
+            const encryptedAltura = altura ? EncryptionService.encrypt(altura) : null;
+            const encryptedPresionArterial = presion_arterial ? EncryptionService.encrypt(presion_arterial) : null;
+            const encryptedDiagnostico = diagnostico ? EncryptionService.encrypt(diagnostico) : null;
+            const encryptedPrescripcion = prescripcion ? EncryptionService.encrypt(prescripcion) : null;
+            const encryptedResultados = resultado_analisis ? EncryptionService.encrypt(resultado_analisis) : null;
+            
+            // Usar una transacción para asegurar que ambas operaciones se completen
+            const result = await new Promise((resolve, reject) => {
+                connection.beginTransaction(async (err) => {
+                    if (err) return reject(err);
+
+                    try {
+                        // 1. Insertar el registro de consulta
+                        const insertQuery = `
+                            INSERT INTO registros_consulta (
+                                id_cita, 
+                                temperatura,
+                                peso, 
+                                altura, 
+                                presion_arterial, 
+                                diagnostico, 
+                                prescripcion, 
+                                resultados_analisis
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        `;
+                        
+                        connection.query(
+                            insertQuery, 
+                            [
+                                id_cita, 
+                                encryptedTemperatura,
+                                encryptedPeso,
+                                encryptedAltura,
+                                encryptedPresionArterial,
+                                encryptedDiagnostico,
+                                encryptedPrescripcion,
+                                encryptedResultados
+                            ], 
+                            (err, insertResult) => {
+                                if (err) {
+                                    return connection.rollback(() => reject(err));
+                                }
+                                
+                                // 2. Actualizar el estado de la cita a 'completada'
+                                const updateQuery = `
+                                    UPDATE citas 
+                                    SET estado_cita = 'completada' 
+                                    WHERE id_cita = ?
+                                `;
+                                
+                                connection.query(updateQuery, [id_cita], (err, updateResult) => {
+                                    if (err) {
+                                        return connection.rollback(() => reject(err));
+                                    }
+                                
+                                    // Confirmar la transacción
+                                    connection.commit((err) => {
+                                        if (err) {
+                                            return connection.rollback(() => reject(err));
+                                        }
+                                        
+                                        resolve({
+                                            insertResult: insertResult,
+                                            updateResult: updateResult
+                                        });
+                                    });
+                                });
+                            }
+                        );
+                    } catch (error) {
+                        connection.rollback(() => reject(error));
+                    }
+                });
+            });
+            
+            // Verificar si ambas operaciones fueron exitosas
+            if (result.insertResult.affectedRows === 1 && result.updateResult.affectedRows === 1) {
+                return {
+                    success: true,
+                    message: 'Reporte guardado y cita marcada como completada',
+                    id_consulta: result.insertResult.insertId
+                };
+            } else if (result.insertResult.affectedRows === 1 && result.updateResult.affectedRows === 0) {
+                // Esto no debería ocurrir si la cita existe
+                return {
+                    success: false,
+                    message: 'Reporte guardado pero no se pudo actualizar el estado de la cita'
+                };
+            } else {
+                return {
+                    success: false,
+                    message: 'No se pudo guardar el reporte'
+                };
+            }
+        
+        } catch (error) {
+            console.log(error);
+            return {
+                success: false,
+                message: error.message || 'Error guardando el reporte'
+            };
+        }
+    }
+
+    async getConsultaConDesencriptacion(id_cita) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    SELECT * FROM registros_consulta 
+                    WHERE id_cita = ?
+                `;
+                
+                connection.query(query, [id_cita], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            
+            if (response.length === 0) {
+                return null;
+            }
+            
+            // Desencriptar los datos sensibles
+            const consulta = response[0];
+            const decryptedConsulta = EncryptionService.decryptMedicalRecord(consulta);
+            
+            return decryptedConsulta;
+        
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
     async editCita(idCita, diaCita, horaCita) {
         try {
             idCita = parseInt(idCita, 10);
@@ -695,7 +843,92 @@ class DBService {
 
         }
     }
+    
+    async getPacienteById(idPaciente) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    SELECT p.id_paciente, p.nombre_paciente, p.direccion, p.correo, p.telefono, p.edad, p.sexo
+                    FROM pacientes p
+                    INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+                    WHERE p.id_paciente = ? AND u.estado_usuario = 'activo'
+                `;
+                
+                connection.query(query, [idPaciente], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            
+            if (response.length === 0) {
+                return null;
+            }
+            
+            return response[0];
+        
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 
+    async getPacienteByUserId(idUsuario) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `SELECT p.id_paciente, p.nombre_paciente, p.direccion, p.correo, p.telefono, p.edad, p.sexo FROM pacientes p INNER JOIN usuarios u ON p.id_usuario = u.id_usuario WHERE p.id_usuario = ? AND u.estado_usuario = 'activo'`;
+                
+                connection.query(query, [idUsuario], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            
+            if (response.length === 0) {
+                return null;
+            }
+            
+            return response[0];
+        
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    // Agrega este método después del método getPacienteById 
+    async getConsultasByPacienteId(idPaciente) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `
+                    SELECT rc.*, c.dia, c.hora 
+                    FROM registros_consulta rc
+                    INNER JOIN citas c ON rc.id_cita = c.id_cita
+                    WHERE c.id_paciente = ?
+                    ORDER BY c.id_cita DESC
+                `;
+                
+                connection.query(query, [idPaciente], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            
+            if (response.length === 0) {
+                return [];
+            }
+            
+            // Desencriptar cada consulta
+            const decryptedConsultas = response.map(consulta => {
+                return EncryptionService.decryptMedicalRecord(consulta);
+            });
+            
+            return decryptedConsultas;
+        
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
 }
 
 module.exports = DBService;

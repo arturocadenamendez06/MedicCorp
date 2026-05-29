@@ -45,3 +45,38 @@
 .tabla-consulta td{
     text-align: left;
 }
+
+/* Animación para mensajes flotantes */
+@keyframes fadeOut {
+    0% { opacity: 1; transform: translateX(0); }
+    70% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(20px); visibility: hidden; }
+}
+
+.mensaje-flotante {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    animation: fadeOut 3s forwards;
+}
+
+.mensaje-flotante.success {
+    background-color: #4CAF50;
+}
+
+.mensaje-flotante.error {
+    background-color: #f44336;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}

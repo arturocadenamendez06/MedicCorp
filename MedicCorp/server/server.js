@@ -2,13 +2,19 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const bcryptjs = require('bcryptjs');
+const crypto = require('crypto');
 const app = express();
 const port = 5000; //Puerto del backend, modificar si es necesario
 const dotenv = require('dotenv');
 
 dotenv.config();
+
+const SECRET_KEY = process.env.ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
+const IV_LENGTH = 16;
+
 const DBService = require('./DBService');
 const EmailService = require('./EmailService');
+
 
 app.use(cors({
     origin: ['http://localhost:5500','http://127.0.0.1:5500','http://localhost'],
@@ -377,6 +383,71 @@ app.get('/citas/:id', async (req, res) => {
     
 });
 
+// server.js - Agrega el endpoint para obtener consulta desencriptada
+app.get('/consulta/decrypt/:id_cita', async (req, res) => {
+    try {
+        const db = DBService.getDBServiceInstance();
+        const { id_cita } = req.params;
+        
+        const consulta = await db.getConsultaConDesencriptacion(id_cita);
+        
+        if (!consulta) {
+            return res.status(404).json({
+                success: false,
+                message: 'Consulta no encontrada'
+            });
+        }
+        
+        res.json({
+            success: true,
+            data: consulta
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo la consulta'
+        });
+    }
+});
+
+// Modifica el endpoint guardarReporteConsulta para incluir validación de sesión
+app.post('/guardarReporteConsulta', async (req, res) => {
+    try {
+        // Verificar que el usuario tenga sesión activa
+        if (!req.session.user || !req.session.user.loggedIn) {
+            return res.status(401).json({
+                success: false,
+                message: 'No autorizado. Inicie sesión primero.'
+            });
+        }
+        
+        const { id_cita, temperatura, peso, altura, presion_arterial, diagnostico, prescripcion, resultado_analisis } = req.body;
+        
+        const db = DBService.getDBServiceInstance();
+        const resultado = await db.guardarReporteConsulta(
+            id_cita,
+            temperatura,
+            peso,
+            altura,
+            presion_arterial,
+            diagnostico,
+            prescripcion,
+            resultado_analisis
+        );
+        
+        res.json(resultado);
+        
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error del servidor al guardar el reporte'
+        });
+    }
+});
+    
 app.patch('/citas/:id', async (req, res) => {
     try {
         const db = DBService.getDBServiceInstance();
@@ -403,6 +474,86 @@ app.patch('/citas/:id', async (req, res) => {
 
     }
     
+});
+
+
+app.get('/paciente/:id', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const { id } = req.params;
+
+    try {
+        const paciente = await db.getPacienteById(id);
+        
+        if (!paciente) {
+            return res.status(404).json({
+                success: false,
+                message: 'Paciente no encontrado'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: paciente
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo datos del paciente'
+        });
+    }
+});
+
+app.get('/consultarPaciente', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const idUsuario = req.session.user.userId;
+
+    try {
+        const paciente = await db.getPacienteByUserId(idUsuario);
+        
+        if (!paciente) {
+            return res.status(404).json({
+                success: false,
+                message: 'Paciente no encontrado'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: paciente
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo datos del paciente'
+        });
+    }
+});
+
+// Agrega esto después del endpoint /paciente/:id
+
+app.get('/paciente/:id/consultas', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+    const { id } = req.params;
+
+    try {
+        const consultas = await db.getConsultasByPacienteId(id);
+        
+        res.json({
+            success: true,
+            data: consultas
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo las consultas del paciente'
+        });
+    }
 });
 
 app.listen(port, () => {

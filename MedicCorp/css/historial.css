@@ -181,3 +181,107 @@
 .btn-regresar:hover {
     background-color: #555;
 }
+
+/* Agrega esto a tu archivo historial.css */
+
+.contenedor-consultas-completadas {
+    margin: 20px;
+    padding: 10px;
+}
+
+.contenedor-consulta {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.contenedor-consulta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.encabezado-consulta {
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.encabezado-consulta h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.fecha-cita p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.tabla-consulta {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f8f9fa;
+}
+
+.tabla-consulta th {
+    background-color: #e9ecef;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tabla-consulta td {
+    padding: 12px;
+    color: #212529;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: top;
+}
+
+.tabla-consulta tr:last-child th,
+.tabla-consulta tr:last-child td {
+    border-bottom: none;
+}
+
+.sin-consultas {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    color: #6c757d;
+}
+
+.sin-consultas p {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.sin-consultas small {
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .encabezado-consulta {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .tabla-consulta th,
+    .tabla-consulta td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    .contenedor-consultas-completadas {
+        margin: 10px;
+    }
+}
