@@ -110,7 +110,7 @@ class DBService {
 
     async getAllCitasDeMedico(idUsuario) {
         try {
-            //Buscar las citas "Reservada" y "Completada" de un paciente
+            //Buscar las citas "Reservada" y "Completada" de un medico
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT c.id_cita, c.id_paciente, c.id_medico, c.dia, c.hora, c.estado_cita FROM usuarios u INNER JOIN medicos m ON u.id_usuario = m.id_usuario INNER JOIN citas c ON m.id_medico = c.id_medico WHERE c.estado_cita IN ('reservada', 'completada') AND u.id_usuario = ?;";
 
@@ -154,6 +154,25 @@ class DBService {
             return [];
         }
 
+    }
+
+    async getAllCitasOrdenadasDeMedico(idUsuario) {
+        try {
+            //Buscar las citas "Reservada" de un medico
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT c.id_cita, c.id_paciente, c.id_medico, c.dia, c.hora, c.estado_cita, p.nombre_paciente FROM usuarios u INNER JOIN medicos m ON u.id_usuario = m.id_usuario INNER JOIN citas c ON m.id_medico = c.id_medico INNER JOIN pacientes p ON p.id_paciente = c.id_paciente WHERE c.estado_cita IN ('reservada') AND u.id_usuario = ? ORDER BY dia ASC, hora ASC;";
+
+                connection.query(query, [idUsuario], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            //console.log(response);
+            return response;
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     /* ----- CITAS ----- */
