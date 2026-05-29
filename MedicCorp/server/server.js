@@ -360,6 +360,17 @@ app.patch('/citas/:id', async (req, res) => {
     
 });
 
+app.get('/medico/getCitasOrdenadas', async (req, res) => {
+    const db = DBService.getDBServiceInstance();
+
+    const resultadoCitasOrdenadas = db.getAllCitasOrdenadasDeMedico(req.session.user.userId);
+    //console.log("Respuesta del servidor: ", resultado);
+    
+    resultadoCitasOrdenadas.then(data => res.json({ data: data }))
+    .catch(err => console.log(err));
+    
+});
+
 app.listen(port, () => {
     console.log('The server is running...');
 })
